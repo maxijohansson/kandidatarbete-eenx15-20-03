@@ -1,0 +1,3 @@
+[submodule "acconeer-python-exploration"]
+	path = acconeer-python-exploration
+	url = https://github.com/acconeer/acconeer-python-exploration.git
