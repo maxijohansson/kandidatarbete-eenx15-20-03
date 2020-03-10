@@ -8,43 +8,46 @@ import plotly.graph_objects as go
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
-data_path = '\\data\\matning1.h5'
+data_path = '\\data\\phase_1\\asfalt1.h5'
 f = h5py.File(BASE_DIR + data_path, 'r')
 
 print(f.keys())
 print(f['data'])
-dset = f['data']
+sample1 = f['data']
 
-print(dset.shape)
+data_path = '\\data\\phase_1\\asfalt2.h5'
+f = h5py.File(BASE_DIR + data_path, 'r')
 
-i = dset[:,0,:]
-i_avg = np.average(i, axis=0)
+print(f.keys())
+print(f['data'])
+sample2 = f['data']
 
-q = dset[:,1,:]
-q_avg = np.average(q, axis=0)
+sample1 = sample1[:,0,:]
+sample1_avg = np.average(sample1, axis=0)
 
-print(i.shape)
-print(q.shape)
+sample2 = sample2[:,0,:]
+sample2_avg = np.average(sample2, axis=0)
 
-Ir_avg = [x.real for x in i_avg]
-Ii_avg = [x.imag for x in i_avg]
 
-Qr_avg = [x.real for x in q_avg]
-Qi_avg = [x.imag for x in q_avg]
+sample1_real = [x.real for x in sample1_avg]
+sample1_imag = [x.imag for x in sample1_avg]
+
+sample2_real = [x.real for x in sample2_avg]
+sample2_imag = [x.imag for x in sample2_avg]
 
 fig = go.Figure(
 	data = [
 		go.Scatter(
-			x = Ir_avg, 
-			y = Ii_avg, 
+			x = sample1_real, 
+			y = sample1_imag, 
 			line = dict(
 				color = 'blue',
 				width = 5
 			)
 		),
 		go.Scatter(
-			x = Qr_avg, 
-			y = Qi_avg,
+			x = sample2_real, 
+			y = sample2_imag,
 			line = dict(
 				color = 'red',
 				width = 5
@@ -54,15 +57,15 @@ fig = go.Figure(
 )
 
 for j in range(20):
-	Ir = [x.real for x in i[j]]
-	Ii = [x.imag for x in i[j]]
+	sample1_real = [x.real for x in sample1[j]]
+	sample1_imag = [x.imag for x in sample1[j]]
 
-	Qr = [x.real for x in q[j]]
-	Qi = [x.imag for x in q[j]]
+	sample2_real = [x.real for x in sample2[j]]
+	sample2_imag = [x.imag for x in sample2[j]]
 
 	fig.add_trace(go.Scatter(		
-		x = Ir, 
-		y = Ii, 
+		x = sample1_real, 
+		y = sample1_imag, 
 		line = dict(
 			color = 'blue',
 			dash = 'dot',
@@ -70,8 +73,8 @@ for j in range(20):
 		)
 	)
 	fig.add_trace(go.Scatter(		
-		x = Qr, 
-		y = Qi, 
+		x = sample2_real, 
+		y = sample2_imag, 
 		line = dict(
 			color = 'red',
 			dash = 'dot',
@@ -80,7 +83,7 @@ for j in range(20):
 	)
 
 
-# fig.show()
+fig.show()
 
 # for i in range(5):
 
