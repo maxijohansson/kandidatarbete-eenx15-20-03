@@ -12,7 +12,7 @@ volatile int elapsedTime = 0;
 volatile int medElapsedTime = 0;
 volatile int counter = 0;
 volatile float medSpeed = 0;
-static float distancePerRotation = 2; // The distance the car travels under one rotation of the encoder wheel
+static float distancePerRotation = 0.1115; // The distance in meters the car travels under one rotation of the encoder wheel
 static float distancePerClick = distancePerRotation/20;
 
 
