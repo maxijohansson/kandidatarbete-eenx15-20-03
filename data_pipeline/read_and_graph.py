@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np  
 import h5py
+import json
 
 import plotly.graph_objects as go
 
@@ -14,21 +15,33 @@ BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 def read_data(path):
 	f = h5py.File(path, 'r')
 	data = np.squeeze(f['data'][:,:,:])
+	if (len(data.shape) != 2):
+		print('Data has invalid shape: ' + path)
+		return
 	index = [i for i in range(data.shape[0])]
 
 	return pd.DataFrame(data=data, index=index)
 
+# returns a dict of metadata
+def read_meta(path):
+	f = h5py.File(path, 'r')
+	meta = json.loads(str(f['session_info'][...]))
+	meta2 = json.loads(str(f['sensor_config_dump'][...]))
+	meta.update(meta2)
+	return meta
+
+
 
 # input:	pandas dataframe with columns of iq data in complex numbers
 # output:	two pandas dataframea with columns for each depth sample's amplitude and phase
+def amplitude(input):
+	return input.apply(np.absolute)
+
+def phase(input):
+	return input.apply(np.angle)
+
 def polar(input):
-	amplitude = pd.DataFrame()
-	phase = pd.DataFrame()
-
-	amplitude = input.apply(np.absolute)
-	phase = input.apply(np.angle)
-
-	return amplitude, phase
+	return amplitude(input), phase(input)
 
 
 def make_2d_trace(x, y, width=2, color='blue', dash='solid', yaxis='y1', name='trace'):
@@ -85,7 +98,7 @@ def plot_amplitude_phase(iqs, dparams, title = ''):
 		print('   Extracted amplitude and phase')
 		
 		d = (dparams[1]-dparams[0])/(len(amplitude.columns)-1)
-		x =  [dparams[0] + i*d for i in range(len(amplitude.columns))]
+		x = [dparams[0] + i*d for i in range(len(amplitude.columns))]
 		trace1 = make_2d_trace(x, amplitude.mean(axis='rows'), color=colors[n], name='amplitude')
 		trace2 = make_2d_trace(x, phase.mean(axis='rows'), color=colors[n], dash='dash', yaxis='y2', name='phase')
 		print('   Constructed traces')
@@ -101,46 +114,26 @@ def plot_amplitude_phase(iqs, dparams, title = ''):
 	fig.show()
 
 
-def plot_iq(iqs):
-	fig = go.Figure()
-	colors = ['blue', 'red', 'green', 'orange']
-
-	for n,iq in enumerate(iqs):
-		iq_avg = iq.mean(axis='rows')
-		i = [x.real for x in iq_avg]
-		q = [x.imag for x in iq_avg]
-
-		fig.add_trace(go.Scatter(		
-			x = i, 
-			y = q, 
-			line = dict(
-				color = colors[n],
-				dash = 'solid',
-				width = 1)
-			)
-		)
-
-	fig.show()
-
-
 if __name__ == '__main__':
 
 	print('Starting...')
 	iqs = []
 
-	iqs.append(read_data(BASE_DIR + '\\data\\nollmatning\\nollmatning_hallplats3.h5'))
+	# iqs.append(read_data(BASE_DIR + '\\data\\nollmatning\\nollmatning_hallplats3.h5'))
 	# iqs.append(read_data(BASE_DIR + '\\data\\nollmatning\\nollmatning_hallplats4.h5'))
 	# iqs.append(read_data(BASE_DIR + '\\data\\nollmatning\\nollmatning_hallplats3.h5'))
 
 	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\asfalt\\parkering_zaloonen_0318_3.h5'))
-	iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\asfalt\\parkering_zaloonen_0318_1.h5'))
+	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\asfalt\\parkering_zaloonen_0318_1.h5'))
 	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\asfalt\\gibraltar_0318_1.h5'))
 	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\asfalt\\gibraltar_0318_2.h5'))
 
-	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\metal1.h5'))
-	# iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\wet2.h5'))
+	iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\matning1.h5'))
+	# # iqs.append(read_data(BASE_DIR + '\\data\\phase_1\\wet2.h5'))
 
 	dparams = [15, 200]
 	print('Plotting curves...')
-	plot_amplitude_phase(iqs, dparams, title='Asfalt vs metall (röd)')
+	plot_amplitude_phase(iqs, dparams, title='Asfalt vs asfalt')
 	# plot_iq(iqs)
+
+
