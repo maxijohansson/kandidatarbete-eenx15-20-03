@@ -21,4 +21,4 @@ meta = json.loads(str(f['session_info'][...]))
 meta2 = json.loads(str(f['sensor_config_dump'][...]))
 meta.update(meta2)
 
-print(data.shape)
+print(meta)
