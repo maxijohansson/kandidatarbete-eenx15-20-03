@@ -17,6 +17,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 data_path = BASE_DIR + '\\data\\app_dir\\'
 files = os.listdir(data_path)
+print(files)
 # files_to_graph = []
 
 marks = {i: '{}'.format(i) for i in range(0, 2001, 100)}
@@ -146,11 +147,14 @@ def update_graphs(files_to_graph):
 def update_data(files, max_amplitude, amplitude, phase):
     files_to_graph = files
 
-    if max_amplitude != 2100:
-        amplitude['layout']['yaxis']['range'] = [0, max_amplitude]
+    
 
     if len(files_to_graph) > 0:
         amplitude, phase = update_graphs(files_to_graph)
+
+        if max_amplitude != 2100:
+                amplitude['layout']['yaxis']['range'] = [0, max_amplitude]
+
         return amplitude, phase
     else:
         return {'data': [], 'layout': {}}, {'data': [], 'layout': {}}
