@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import time
+import numpy as np
 
 import dash
 import dash_table as dt
@@ -14,52 +16,61 @@ import app_elements as elements
 
 from config import *
 
-the_rows = []
 
 app.layout = html.Div([
     html.Div([
-        dt.DataTable(
-            id = 'selected_file_table',
-            columns = [
-                {"name": i, "id": i} for i in file_table_columns
-            ],
-            data = []
-        )
+        elements.selected_file_table
     ]),
-    dcc.Tabs(id='main_tabs', value='settings_tab', children=[
-        dcc.Tab(label='Settings', value='settings_tab'),
-        dcc.Tab(label='Amplitude/Phase', value='ap_tab')
-    ]),
-    html.Div(id='main_tab'),
+    html.Div(
+        dcc.Tabs(id='tabs', value='settings_tab', children=[
+            dcc.Tab(label='Settings', value='settings_tab'),
+            dcc.Tab(label='Amplitude/Phase', value='ap_tab'),
+            dcc.Tab(label='Histograms', value='hist_tab'),
+            dcc.Tab(label='Z-plane', value='z_tab')
+        ]),
+    ),
+    dcc.Loading(
+        id = "loading_main_tab", 
+        children = [html.Div(id='main_tab')], 
+        type = "default"
+    ),
     html.Div(id='hidden_div', style={'display':'none'})
 ])
 
 
 @app.callback(
     Output('main_tab', 'children'),
-    [Input('main_tabs', 'value')],
+    [Input('tabs', 'value')],
     [State('selected_file_table', 'data')])
-def render_content(tab, files_dict):
-    files_to_graph = [str(i['filename']) for i in files_dict]
-    ids_to_graph =  [i['id'] for i in files_dict]
+def render_tab(tab, selected_files):
+    # time.sleep(1)
+
+    files_to_graph = [row['filename'] for row in selected_files if row['filename'] != None]
+    ids_to_graph =  [row['id'] for row in selected_files if row['id'] != None]
 
     if tab == 'settings_tab':
-        return elements.settings_tab(ids_to_graph)
+        return elements.settings_tab(files_to_graph)
 
     elif tab == 'ap_tab':
-        return elements.ap_graph_tab(files_to_graph)
+        return html.Div(elements.ap_tab(files_to_graph))
+
+    elif tab == 'hist_tab':
+        return html.Div(elements.hist_tab(files_to_graph))
+
+    elif tab == 'z_tab':
+        return html.Div(elements.z_tab(files_to_graph))
+
 
 @app.callback(
     Output('selected_file_table', 'data'),
     [Input('metadata_table', 'selected_rows')])
 def update_settings(selected_rows):
     if selected_rows is None:
-        the_rows = []
         return {}
     else:
-        the_rows = selected_rows
-        file_table = metadata.iloc[selected_rows, :]
-        file_table = file_table.loc[:, file_table_columns]
+        file_table = []
+        file_table = [{col:np.nan for col in file_table_columns} for i in range(8)]
+        file_table[i] = metadata.ix[selected_rows[i], file_table_columns] for i in selected_rows
         return file_table.to_dict('records')
 
 

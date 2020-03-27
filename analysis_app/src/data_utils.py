@@ -39,3 +39,12 @@ def phase(input):
 
 def polar(input):
 	return amplitude(input), phase(input)
+
+def real(input):
+	return input.apply(np.real)
+
+def imag(input):
+	return input.apply(np.imag)
+
+def rect(input):
+	return real(input), imag(input)

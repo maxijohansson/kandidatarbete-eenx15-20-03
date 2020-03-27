@@ -15,17 +15,23 @@ data_path = BASE_DIR + '\\data\\data\\'
 files = os.listdir(data_path)
 # files_to_graph = []
 file_table_columns = ['filename', 'timestamp', 'angle', 'range_interval', 'data_length', 'step_length_m', 'update_rate', 'id']
+colors = ['#0074D9', '#FF4136', '#3D9970', '#FF851B', '#B10DC9', '#AAAAAA', '#001f3f', '#7FDBFF']
 
 marks = {i: '{}'.format(i) for i in range(0, 2001, 100)}
 marks.update({2100: 'auto'})
 
 metadata = pd.read_csv(BASE_DIR + '\\data\\metadata.csv', delimiter = ';')
 metadata = metadata[metadata['Column1'].isin(files)]
+metadata.reset_index(inplace=True, drop=False)
 metadata['filename'] = metadata['Column1']
 metadata['id'] = metadata.index
 metadata.set_index('Column1', inplace=True)
 metadata.rename_axis(None, inplace=True)
-metadata = metadata[['filename'] + [c for c in metadata if c not in ['filename']] ]
+metadata = metadata[['filename'] + [c for c in metadata if c not in ['filename']]]
+metadata_dict = metadata.to_dict('records')
+metadata_columns = [ {"name": i, "id": i, "deletable": False, "selectable": True} for i in metadata.columns ]
+
+# print(metadata.to_dict('records'))
 
 # selected_rows = [0]
 # file_table = metadata.iloc[selected_rows, :]
