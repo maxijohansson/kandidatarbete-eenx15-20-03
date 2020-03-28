@@ -4,16 +4,19 @@ Surface classification with radar and machine learning
 ### Instruktioner för analysis-app
 Förutsätt att denna repo är clone:ad lokalt:
 1. Öppna kommandofönster och navigera till mappen analysis-app
-```...\kandidatarbete-eenx15-20-03\analysis_app>
+```
+...\kandidatarbete-eenx15-20-03\analysis_app>
 ```
 2. Aktivera virtual environment
-```...\analysis_app>venv\scripts\activate
+```
+...\analysis_app>venv\scripts\activate
 ```
 3. Kör appen
 ```(venv) ...\analysis_app>python src\app.py
 ```
 4. Något i stil med följande kommer att skrivas ut:
-```Running on http://127.0.0.1:8050/
+```
+Running on http://127.0.0.1:8050/
 Debugger PIN: 804-687-657
  * Serving Flask app "config" (lazy loading)
  * Environment: production
