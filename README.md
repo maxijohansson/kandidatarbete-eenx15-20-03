@@ -2,8 +2,8 @@
 Surface classification with radar and machine learning
 
 ### Instruktioner för analysis-app
-Förutsätt att denna repo är clone:ad lokalt:
-1. Öppna kommandofönster och navigera till mappen analysis-app
+Förutsatt att denna repo är clone:ad lokalt:
+1. Öppna kommandofönster och navigera till mappen analysis_app
 ```
 ...\kandidatarbete-eenx15-20-03\analysis_app>
 ```
@@ -12,7 +12,8 @@ Förutsätt att denna repo är clone:ad lokalt:
 ...\analysis_app>venv\scripts\activate
 ```
 3. Kör appen
-```(venv) ...\analysis_app>python src\app.py
+```
+(venv) ...\analysis_app>python src\app.py
 ```
 4. Något i stil med följande kommer att skrivas ut:
 ```
