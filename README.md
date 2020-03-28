@@ -1,12 +1,12 @@
 # kandidatarbete-eenx15-20-03
 Surface classification with radar and machine learning
 
-## Instruktioner för analysis-app
-### Förutsätt att denna repo är clone:ad lokalt
+### Instruktioner för analysis-app
+Förutsätt att denna repo är clone:ad lokalt:
 1. Öppna kommandofönster och navigera till mappen analysis-app
-`...\kandidatarbete-eenx15-20-03\analysis_app>`
+```...\kandidatarbete-eenx15-20-03\analysis_app>```
 2. Aktivera virtual environment
-`...\analysis_app>venv\scripts\activate`
+```...\analysis_app>venv\scripts\activate```
 3. Kör appen
 `...\analysis_app>python src\app.py`
 4. Något i stil med följande kommer att skrivas ut:
