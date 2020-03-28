@@ -21,19 +21,19 @@ selected_file_table = (
         columns = [
             {"name": col, "id": col} for col in file_table_columns
         ],
-        data = [{col:np.nan for col in file_table_columns} for i in range(8)],
-        style_as_list_view=True,
-        style_header={
+        data = empty_selected_file_df.to_dict('records'),
+        style_as_list_view = True,
+        style_header = {
             'backgroundColor': 'white',
             'fontWeight': 'bold'
         },
-        style_data_conditional=[{
+        style_data_conditional = [{
                 "if": {"row_index": i},
                 "backgroundColor": colors[i],
                 'color': 'white'
             } for i in range(len(colors))
         ],
-        style_cell_conditional=[{
+        style_cell_conditional = [{
                 'if': {'column_id': c},
                 'textAlign': 'left'
             } for c in ['filename']
@@ -48,6 +48,9 @@ def settings_tab(selected_files):
 
     return(
 
+        html.Div(
+            dbc.Button('Clear selections', color='Primary', id='clear_selections')
+        ),
         html.Div(
             [
             html.Div(

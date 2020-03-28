@@ -63,15 +63,27 @@ def render_tab(tab, selected_files):
 
 @app.callback(
     Output('selected_file_table', 'data'),
-    [Input('metadata_table', 'selected_rows')])
-def update_settings(selected_rows):
-    if selected_rows is None:
-        return {}
+    [Input('metadata_table', 'selected_rows')],
+    [State('selected_file_table', 'data')])
+def update_settings(selected_ids, prev_selection):
+    if selected_ids is None or len(selected_ids) == 0:
+        return empty_selected_file_df.to_dict('records')
+    elif len(selected_ids) > max_selected_files:
+        return prev_selection
     else:
-        file_table = []
-        file_table = [{col:np.nan for col in file_table_columns} for i in range(8)]
-        file_table[i] = metadata.ix[selected_rows[i], file_table_columns] for i in selected_rows
+        file_table = empty_selected_file_df
+        relevant_data = metadata.loc[:, file_table_columns]
+        for i, selected_id in enumerate(selected_ids):
+            file_table.iloc[i, :] = relevant_data.iloc[selected_id, :]
+
         return file_table.to_dict('records')
+
+
+@app.callback(
+    Output('metadata_table', 'selected_rows'),
+    [Input('clear_selections', 'n_clicks')])
+def clear_selections(click):
+    return []
 
 
 if __name__ == '__main__':

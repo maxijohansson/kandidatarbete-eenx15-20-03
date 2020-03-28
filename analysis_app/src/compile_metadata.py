@@ -4,7 +4,7 @@ import numpy as np
 import h5py
 import json
 
-# from config import BASE_DIR
+from config import BASE_DIR
 
 
 def add_files_from_dir(data_path):
@@ -46,9 +46,9 @@ def add_files_from_dir(data_path):
 
 
 if __name__ == '__main__':
-	data_path = BASE_DIR + '\\data\\phase_1\\'
-	add_files_from_dir(data_path)
-	data_path = BASE_DIR + '\\data\\nollmatning\\'
-	add_files_from_dir(data_path)
+	data_path = BASE_DIR + '\\data\\data\\'
+	df = add_files_from_dir(data_path)
+	# data_path = BASE_DIR + '\\data\\nollmatning\\'
+	# add_files_from_dir(data_path)
 
-	df.to_csv(BASE_DIR + '\\data\\metadata.csv')
+	df.to_csv(BASE_DIR + '\\data\\metadata2.csv')
