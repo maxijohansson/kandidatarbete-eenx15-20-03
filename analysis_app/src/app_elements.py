@@ -113,6 +113,21 @@ def ap_tab(files_to_graph):
     )
 
 
+# Returns the Real/Imaginary tab
+def ri_tab(files_to_graph):
+    if len(files_to_graph) > 0:
+        real, imag = update_ri_graphs(files_to_graph)
+    else:
+        real, imag = {'data': [], 'layout': {}}, {'data': [], 'layout': {}}
+
+    return(
+        html.Div([
+            dcc.Graph(id='amplitude', figure=real),
+            dcc.Graph(id='phase', figure=imag),
+        ], style={'display': 'inline-block', 'height': 400, 'width': '100%'})
+    )
+
+
 def z_tab(files_to_graph):
     z_plane = update_z_graphs(files_to_graph)
 
@@ -129,9 +144,12 @@ def z_tab(files_to_graph):
 
 def hist_tab(files_to_graph):
     if len(files_to_graph) > 0:
-        amplitude, phase = update_hist(files_to_graph)
+        amplitude, phase, real, imag = update_hist(files_to_graph)
     else:
-        amplitude, phase = {'data': [], 'layout': {}}, {'data': [], 'layout': {}}
+        amplitude = {'data': [], 'layout': {}}
+        phase = {'data': [], 'layout': {}}
+        real = {'data': [], 'layout': {}}
+        imag = {'data': [], 'layout': {}}
 
     return(
         html.Div([
@@ -141,6 +159,14 @@ def hist_tab(files_to_graph):
             ),
             html.Div(
                 dcc.Graph(id='phase_hist', figure=phase),
+                style = {'display': 'inline-block', 'width': '48%'}
+            ),
+            html.Div(
+                dcc.Graph(id='real_hist', figure=real),
+                style = {'display': 'inline-block', 'width': '48%'}
+            ),
+            html.Div(
+                dcc.Graph(id='imag_hist', figure=imag),
                 style = {'display': 'inline-block', 'width': '48%'}
             )
             
@@ -218,6 +244,37 @@ def update_ap_graphs(files_to_graph):
     return amplitude, phase
 
 
+# Returns two figures
+def update_ri_graphs(files_to_graph):
+    xs = []
+    y_reals = []
+    y_imags = []
+
+    for i,file in enumerate(files_to_graph):
+        iq = utils.read_data(data_path + file)
+        real, imag = utils.rect(iq)
+        meta = utils.read_meta(data_path + file)
+
+        d = meta['step_length_m']
+        x = [meta['range_start_m'] + d*i for i in range(meta['data_length'])]
+        xs.append(x)
+    
+        y_reals.append([])
+        y_reals[i].append(real.mean(axis='rows'))
+        y_reals[i].append(y_reals[i][0] + real.std())
+        y_reals[i].append(y_reals[i][0] - real.std())
+
+        y_imags.append([])
+        y_imags[i].append(imag.mean(axis='rows'))
+        y_imags[i].append(y_imags[i][0] + imag.std())
+        y_imags[i].append(y_imags[i][0] - imag.std())
+
+    real = ap_graph(xs, y_reals, 'distance (m)', 'real component')
+    imag = ap_graph(xs, y_imags, 'distance (m)', 'imaginary component')
+    
+    return real, imag
+
+
 # Returns a figure
 def z_graph(xs, ys, xaxis, yaxis):
     data = []
@@ -285,10 +342,13 @@ def update_z_graphs(files_to_graph):
 def update_hist(files_to_graph):
     amplitudes_at_peak = []
     phases_at_peak = []
+    reals_at_peak = []
+    imags_at_peak = []
 
     for i,file in enumerate(files_to_graph):
         iq = utils.read_data(data_path + file)
         amplitude, phase = utils.polar(iq)
+        real, imag = utils.rect(iq)
         meta = utils.read_meta(data_path + file)
 
         d = meta['step_length_m']
@@ -299,21 +359,31 @@ def update_hist(files_to_graph):
 
         amplitudes_at_peak.append(amplitude[x_peak_n])
         phases_at_peak.append(phase[x_peak_n])
+        reals_at_peak.append(real[x_peak_n])
+        imags_at_peak.append(imag[x_peak_n])
 
-    amplitude = histogram(amplitudes_at_peak, 'amplitude at first peak', 'distribution')
-    phase = histogram(phases_at_peak, 'phase at first peak', 'distribution')
+    amplitude = histogram(amplitudes_at_peak, 'amplitude at first peak', 'distribution', 10)
+    phase = histogram(phases_at_peak, 'phase at first amplitude peak', 'distribution', 0.2)
+    real = histogram(reals_at_peak, 'real component at first amplitude peak', 'distribution', 10)
+    imag = histogram(imags_at_peak, 'imaginary component at first amplitude peak', 'distribution', 10)
     
-    return amplitude, phase
+    return amplitude, phase, real, imag
 
 
-def histogram(sets, xaxis, yaxis):
+def histogram(sets, xaxis, yaxis, binsize):
     data = []
     j = 0
     for l in sets:
         data.append(go.Histogram(
             x = l, 
             opacity = 0.5,
-            marker_color = colors[j]
+            marker_color = colors[j],
+            nbinsx = 40,
+            xbins = dict(
+                # start=-4.0,
+                # end=3.0,
+                # size = binsize
+            )
         ))
         j = j+1
     

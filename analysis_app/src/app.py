@@ -18,13 +18,14 @@ from config import *
 
 
 app.layout = html.Div([
-    html.Div([
+    html.Div(id = 'selected_file_container', children = [
         elements.selected_file_table
     ]),
     html.Div(
         dcc.Tabs(id='tabs', value='settings_tab', children=[
             dcc.Tab(label='Settings', value='settings_tab'),
-            dcc.Tab(label='Amplitude/Phase', value='ap_tab'),
+            dcc.Tab(label='Amplitude/Phase Components', value='ap_tab'),
+            dcc.Tab(label='Real/Imaginary Components', value='ri_tab'),
             dcc.Tab(label='Histograms', value='hist_tab'),
             dcc.Tab(label='Z-plane', value='z_tab')
         ]),
@@ -54,6 +55,9 @@ def render_tab(tab, selected_files):
     elif tab == 'ap_tab':
         return html.Div(elements.ap_tab(files_to_graph))
 
+    elif tab == 'ri_tab':
+        return html.Div(elements.ri_tab(files_to_graph))
+
     elif tab == 'hist_tab':
         return html.Div(elements.hist_tab(files_to_graph))
 
@@ -80,10 +84,11 @@ def update_settings(selected_ids, prev_selection):
 
 
 @app.callback(
-    Output('metadata_table', 'selected_rows'),
+    [Output('metadata_table', 'selected_rows'),
+    Output('selected_file_container', 'children')],
     [Input('clear_selections', 'n_clicks')])
 def clear_selections(click):
-    return []
+    return [], elements.selected_file_table
 
 
 if __name__ == '__main__':
