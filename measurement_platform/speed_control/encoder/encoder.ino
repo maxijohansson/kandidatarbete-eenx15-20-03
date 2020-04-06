@@ -15,10 +15,10 @@ volatile float medSpeed = 0;
 static float distancePerRotation = 0.1115; // The distance in meters the car travels under one rotation of the encoder wheel
 static float distancePerClick = distancePerRotation/20;
 
-
 RunningMedian samples = RunningMedian(10);
 
 void setup() {
+  
   pinMode(pinA, INPUT_PULLUP);
   pinMode(pinB, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(pinA),pinATrig,RISING);
@@ -34,7 +34,7 @@ void pinATrig() {
   if (reading == B00001100 && aFlag) {
     aFlag = 0;
     bFlag = 0;
-    Serial.println("pin A");
+    //Serial.println("pin A");
   }
   else if (reading == B00000100) bFlag = 1;
 
@@ -49,6 +49,7 @@ void pinBTrig() {
     bFlag = 0;
     newTime = millis();
     elapsedTime = newTime - oldTime;
+    Serial.println(elapsedTime);
     samples.add(elapsedTime);
     medSpeed = distancePerClick / (0.001*samples.getMedian());
     counter++;
@@ -63,8 +64,9 @@ void pinBTrig() {
 
 void loop() {
   if (millis() % 200 == 0) {
-    Serial.print("speed: ");
-    Serial.println(medSpeed);
+    //Serial.print("speed: ");
+    //Serial.println(medSpeed);
     delay(10);
   }
+  
 }
