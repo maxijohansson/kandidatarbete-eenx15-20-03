@@ -8,6 +8,7 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 
 import plotly.graph_objects as go
+import ipywidgets as widgets
 
 import data_utils as utils
 
@@ -362,27 +363,29 @@ def update_hist(files_to_graph):
         reals_at_peak.append(real[x_peak_n])
         imags_at_peak.append(imag[x_peak_n])
 
-    amplitude = histogram(amplitudes_at_peak, 'amplitude at first peak', 'distribution', 10)
-    phase = histogram(phases_at_peak, 'phase at first amplitude peak', 'distribution', 0.2)
-    real = histogram(reals_at_peak, 'real component at first amplitude peak', 'distribution', 10)
-    imag = histogram(imags_at_peak, 'imaginary component at first amplitude peak', 'distribution', 10)
+    amplitude = histogram_a(amplitudes_at_peak, 'amplitude at first peak', 'distribution')
+    phase = histogram_p(phases_at_peak, 'phase at first amplitude peak', 'distribution')
+    real = histogram_a(reals_at_peak, 'real component at first amplitude peak', 'distribution')
+    imag = histogram_a(imags_at_peak, 'imaginary component at first amplitude peak', 'distribution')
     
     return amplitude, phase, real, imag
 
 
-def histogram(sets, xaxis, yaxis, binsize):
+def histogram_a(sets, xaxis, yaxis):
     data = []
     j = 0
+    
     for l in sets:
         data.append(go.Histogram(
             x = l, 
             opacity = 0.5,
             marker_color = colors[j],
             nbinsx = 40,
+            autobinx = False,
             xbins = dict(
-                # start=-4.0,
+                # start = -4.0,
                 # end=3.0,
-                # size = binsize
+                size = 20
             )
         ))
         j = j+1
@@ -399,7 +402,44 @@ def histogram(sets, xaxis, yaxis, binsize):
             margin = {'l': 50, 'b': 30, 't': 10, 'r': 0},
             hovermode = 'closest',
             showlegend = False,
-            barmode = 'overlay'
+            barmode = 'overlay',
+            histnorm = '',
+            bargap = 0.01
         )
     }
 
+def histogram_p(sets, xaxis, yaxis):
+    data = []
+    j = 0
+    for l in sets:
+        data.append(go.Histogram(
+            x = l, 
+            opacity = 0.5,
+            marker_color = colors[j],
+            # nbinsx = 40,
+            autobinx = False,
+            xbins = dict(
+                start = -3.2,
+                end = 3.2,
+                size = 0.05
+            )
+        ))
+        j = j+1
+    
+    return {
+        'data': data,
+        'layout': dict(
+            xaxis = {
+                'title': xaxis,
+            },
+            yaxis = {
+                'title': yaxis,
+            },
+            margin = {'l': 50, 'b': 30, 't': 10, 'r': 0},
+            hovermode = 'closest',
+            showlegend = False,
+            barmode = 'overlay',
+            histnorm = '',
+            bargap = 0.01
+        )
+    }

@@ -4,11 +4,18 @@ import numpy as np
 import h5py
 import json
 
+import data_utils as utils
+
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
+# path = BASE_DIR + '\\data\\phase_2\\maskingrand_move_30_3.h5'
+# f = h5py.File(path, 'r')
 
-path = BASE_DIR + '\\data\\nollmatning\\scania_0324_30_1.h5'
-# def read_data(path):
-f = h5py.File(path, 'r')
+# print(f.keys())
+# print(f['data'])
 
-print(f.keys())
+data_path = BASE_DIR + '\\data\\phase_2\\dry'
+
+files = os.listdir(data_path)
+for file in files:
+	print(file)
