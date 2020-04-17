@@ -12,7 +12,7 @@ data_path = BASE_DIR + '\\data\\phase_2\\envelope_10avg.csv'
 df = pd.read_csv(data_path, index_col=0)
 df = df.sample(frac=1).reset_index(drop=True)
 
-df_dry = df[df['label'] == 'dry']	# To get the same no of each label
+df_dry = df[df['label'] == 'dry']	# To get the same amount of each label
 df_dry = df_dry.iloc[:1000, :]
 df_wet = df[df['label'] == 'wet']
 df_wet = df_wet.iloc[:1000, :]
@@ -21,7 +21,7 @@ df = pd.concat([df_dry, df_wet])
 X = df.iloc[:, :-1]
 y = df.iloc[:,-1]
 
-x_temp = X.values					# Normalize data
+x_temp = X.values					# Scale data
 min_max_scaler = preprocessing.MinMaxScaler()
 x_scaled = min_max_scaler.fit_transform(x_temp)
 X = pd.DataFrame(x_scaled)

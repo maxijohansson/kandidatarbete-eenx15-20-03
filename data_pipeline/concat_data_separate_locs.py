@@ -30,12 +30,22 @@ for file in files:
 	elif 'zaloonen' in file:
 		dry_za = pd.concat([dry_za, df])
 
+print('Length of datasets:')
+print('df_mg: ' + str(len(dry_mg.index)))
+print('df_mh: ' + str(len(dry_mh.index)))
+print('df_za: ' + str(len(dry_za.index)))
+
 dry_mg = dry_mg.rolling(n).mean() 
 dry_mg = dry_mg.iloc[24::n, :]
 dry_mh = dry_mh.rolling(n).mean() 
 dry_mh = dry_mh.iloc[24::n, :]
 dry_za = dry_za.rolling(n).mean() 
 dry_za = dry_za.iloc[24::n, :]
+
+print('Length of datasets:')
+print('df_mg: ' + str(len(dry_mg.index)))
+print('df_mh: ' + str(len(dry_mh.index)))
+print('df_za: ' + str(len(dry_za.index)))
 
 dry_mg.dropna(inplace=True)
 dry_mh.dropna(inplace=True)
@@ -64,12 +74,22 @@ for file in files:
 	elif 'zaloonen' in file:
 		wet_za = pd.concat([wet_za, df])
 
+print('Length of datasets:')
+print('df_mg: ' + str(len(wet_mg.index)))
+print('df_mh: ' + str(len(wet_mh.index)))
+print('df_za: ' + str(len(wet_za.index)))
+
 wet_mg = wet_mg.rolling(n).mean() 
 wet_mg = wet_mg.iloc[24::n, :]
 wet_mh = wet_mh.rolling(n).mean() 
 wet_mh = wet_mh.iloc[24::n, :]
 wet_za = wet_za.rolling(n).mean() 
-wet_za = dry_za.iloc[24::n, :]
+wet_za = wet_za.iloc[24::n, :]
+
+print('Length of datasets:')
+print('df_mg: ' + str(len(wet_mg.index)))
+print('df_mh: ' + str(len(wet_mh.index)))
+print('df_za: ' + str(len(wet_za.index)))
 
 wet_mg.dropna(inplace=True)
 wet_mh.dropna(inplace=True)
