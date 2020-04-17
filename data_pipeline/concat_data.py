@@ -10,7 +10,7 @@ import data_utils as utils
 
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
-n = 25
+n = 10
 data_path = BASE_DIR + '\\data\\phase_2\\dry\\'
 
 files = os.listdir(data_path)
@@ -55,4 +55,4 @@ features = pd.concat([dry, wet])
 features.reset_index(inplace=True, drop=True)
 
 print(features)
-features.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_unprocessed_25avg.csv')
+features.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_10avg.csv')
