@@ -26,9 +26,16 @@ min_max_scaler = preprocessing.MinMaxScaler()
 x_scaled = min_max_scaler.fit_transform(x_temp)
 X = pd.DataFrame(x_scaled)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1)
-
 clf = svm.SVC(gamma='scale')
-clf.fit(X_train, y_train)
 
-print(clf.score(X_test, y_test))
+accuracies = []
+for i in range(30):
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1)
+	clf.fit(X_train, y_train)
+	accuracies.append(clf.score(X_test, y_test))
+
+def mean(lst): 
+    return sum(lst) / len(lst) 
+
+print(mean(accuracies))
+
