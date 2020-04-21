@@ -2,7 +2,14 @@ import os
 import pandas as pd
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
-from sklearn import svm
+from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
+from sklearn.linear_model import SGDClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import balanced_accuracy_score
+
 
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
@@ -18,8 +25,11 @@ datasets['zaloonen'] = pd.read_csv(data_path + 'envelope_zaloonen_25avg.csv', in
 print('Size of datasets:')
 for key in datasets.keys():
 	print(key + ': ' + str(len(datasets[key].index)))
+print()
 
 for key, dataset in datasets.items():
+	print('-----------------------------------------')
+	print(key + ' as test set')
 	train_keys = [k for k in datasets.keys() if k not in [key]]
 	train_sets = [datasets[train_key] for train_key in train_keys]
 	train = pd.concat(train_sets)
@@ -41,13 +51,19 @@ for key, dataset in datasets.items():
 	y_train = train.iloc[:,-1]
 	y_test = test.iloc[:,-1]
 
-	clf = svm.SVC(gamma='scale')
+	clf = SVC(kernel='rbf', gamma='scale')
+	# clf = LinearSVC()
+	# clf = SGDClassifier(loss="hinge", penalty="l2", max_iter=5)
+	# clf = RandomForestClassifier(n_estimators=10)
+	# clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
+	# clf = KNeighborsClassifier(n_neighbors=15)
 
+	print('Training model...')
 	clf.fit(X_train, y_train)
 
 	# for i in range(20):
 	#     print(clf.predict([X_test.iloc[i,0:]]), y_test[i])
-	print()
-	print(key + ' as test set: ')
+
 	print('Train size: ' + str(train_size))
 	print('Accuracy: ' + str(clf.score(X_test, y_test)))
+	print()

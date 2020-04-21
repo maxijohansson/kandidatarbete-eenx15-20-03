@@ -10,7 +10,7 @@ import data_utils as utils
 
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
-n = 25
+n = 5
 data_path = BASE_DIR + '\\data\\phase_2\\dry\\'
 
 files = os.listdir(data_path)
@@ -30,17 +30,12 @@ for file in files:
 	elif 'zaloonen' in file:
 		dry_za = pd.concat([dry_za, df])
 
-print('Length of datasets:')
-print('df_mg: ' + str(len(dry_mg.index)))
-print('df_mh: ' + str(len(dry_mh.index)))
-print('df_za: ' + str(len(dry_za.index)))
-
 dry_mg = dry_mg.rolling(n).mean() 
-dry_mg = dry_mg.iloc[24::n, :]
+dry_mg = dry_mg.iloc[n-1::n, :]
 dry_mh = dry_mh.rolling(n).mean() 
-dry_mh = dry_mh.iloc[24::n, :]
+dry_mh = dry_mh.iloc[n-1::n, :]
 dry_za = dry_za.rolling(n).mean() 
-dry_za = dry_za.iloc[24::n, :]
+dry_za = dry_za.iloc[n-1::n, :]
 
 dry_mg.dropna(inplace=True)
 dry_mh.dropna(inplace=True)
@@ -70,11 +65,11 @@ for file in files:
 		wet_za = pd.concat([wet_za, df])
 
 wet_mg = wet_mg.rolling(n).mean() 
-wet_mg = wet_mg.iloc[24::n, :]
+wet_mg = wet_mg.iloc[n-1::n, :]
 wet_mh = wet_mh.rolling(n).mean() 
-wet_mh = wet_mh.iloc[24::n, :]
+wet_mh = wet_mh.iloc[n-1::n, :]
 wet_za = wet_za.rolling(n).mean() 
-wet_za = wet_za.iloc[24::n, :]
+wet_za = wet_za.iloc[n-1::n, :]
 
 wet_mg.dropna(inplace=True)
 wet_mh.dropna(inplace=True)
@@ -91,7 +86,11 @@ features_mg.reset_index(inplace=True, drop=True)
 features_mh.reset_index(inplace=True, drop=True)
 features_za.reset_index(inplace=True, drop=True)
 
-print(len(features_mh.index))
-features_mg.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_maskingrand_25avg.csv')
-features_mh.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_maskinhuset_25avg.csv')
-features_za.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_zaloonen_25avg.csv')
+print('Length of datasets:')
+print('mg: ' + str(len(features_mg.index)))
+print('mh: ' + str(len(features_mh.index)))
+print('za: ' + str(len(features_za.index)))
+
+features_mg.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_maskingrand_5avg.csv')
+features_mh.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_maskinhuset_5avg.csv')
+features_za.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_zaloonen_5avg.csv')

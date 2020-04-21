@@ -19,6 +19,7 @@ n = 10
 dry = pd.DataFrame()
 
 for file in files:
+	
 	df = utils.read_data(data_path + file)
 	df = utils.amplitude(df)
 	df = df.rolling(n).mean() 
