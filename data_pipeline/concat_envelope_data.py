@@ -10,7 +10,7 @@ import data_utils as utils
 
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
-n = 1
+n = 10
 locs = ['fotbollsplan', 'maskinhuset', 'ronnvagen', 'SB', 'sven_hultin', 'zaloonen']
 
 label = 'dry'
@@ -33,6 +33,7 @@ for loc in locs:
 	drys[loc].dropna(inplace=True)
 
 	drys[loc].loc[:,'label'] = label
+	print('dry {}: {}'.format(loc, len(drys[loc])))
 
 label = 'wet'
 wets = {loc: pd.DataFrame() for loc in locs}
