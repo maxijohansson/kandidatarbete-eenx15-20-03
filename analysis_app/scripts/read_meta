@@ -1,0 +1,35 @@
+import os
+import pandas as pd
+import numpy as np
+import h5py
+import json
+
+BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
+
+data_path = BASE_DIR + '\\data\\data\\'
+file = 'garage_0324_30_1.h5'
+columns = ['angle', 'distance', 'label', 'temp', 'timestamp', 'range_start_m', 'range_length_m', 'data_length', 'step_length_m', 'mode', 'sensor', 'range_interval', 'profile', 'update_rate', 'sampling_mode', 'repetition_mode', 'downsampling_factor', 'hw_accelerated_average_samples', 'gain', 'maximize_signal_attenuation', 'noise_level_normalization', 'tx_disable']
+
+f = h5py.File(data_path + file, 'r')
+
+
+print(f.keys())
+intersection = [value for value in columns if value in list(f.keys())] 
+rest = [value for value in columns if value not in list(f.keys())]
+rest.remove('angle')
+
+if 'angel' in list(f.keys()):
+	df.loc[file, 'angle'] = f['angel'][...]
+elif 'angle' in list(f.keys()):
+	df.loc[file, 'angle'] = f['angle'][...]
+
+if 'distance' not in list(f.keys()):
+	# df.loc[file, 'distance'] = f['distance'][...]
+	rest.remove('distance')
+
+
+meta = json.loads(str(f['session_info'][...]))
+meta2 = json.loads(str(f['sensor_config_dump'][...]))
+meta.update(meta2)
+
+print(meta)
