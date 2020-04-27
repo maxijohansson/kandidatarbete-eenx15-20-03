@@ -24,6 +24,8 @@ df = pd.concat([X,y], axis='columns')
 data = df.iloc[:,:-1].values.T
 dry = df[df['label'] == 'dry'].iloc[:,:-1].values.T
 wet = df[df['label'] == 'wet'].iloc[:,:-1].values.T
+# dry = df.iloc[:1000,:-1].values.T
+# wet = df.iloc[1000:2000,:-1].values.T
 
 avg_dry = np.mean(dry, axis=1)
 avg_wet = np.mean(wet, axis=1)

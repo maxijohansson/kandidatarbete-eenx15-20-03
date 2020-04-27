@@ -14,10 +14,12 @@ from sklearn.metrics import balanced_accuracy_score
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
-data_path = BASE_DIR + '\\data\\phase_3\\avg_envelope_n10\\'
+# data_path = BASE_DIR + '\\data\\phase_3\\avg_envelope_n10\\'
+data_path = BASE_DIR + '\\data\\phase_3\\moving_average_features\\ma_n10\\'
+
 
 datasets = {}
-ds_factor = 300
+ds_factor = 20
 locs = ['fotbollsplan', 'maskinhuset', 'ronnvagen', 'SB', 'sven_hultin', 'zaloonen']
 
 for loc in locs:

@@ -11,17 +11,16 @@ import data_utils as utils
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
-data_path = BASE_DIR + '\\data\\phase_2\\dry\\'
+data_path = BASE_DIR + '\\data\\phase_3\\dry\\'
 
 files = os.listdir(data_path)
-n = 10
+n = 1
 
 dry = pd.DataFrame()
 
 for file in files:
 	
 	df = utils.read_data(data_path + file)
-	df = utils.amplitude(df)
 	df = df.rolling(n).mean() 
 	df = df.iloc[::n, :]
 
@@ -33,7 +32,7 @@ dry['label'] = 'dry'
 # print(dry)
 
 
-data_path = BASE_DIR + '\\data\\phase_2\\wet\\'
+data_path = BASE_DIR + '\\data\\phase_3\\wet\\'
 
 files = os.listdir(data_path)
 
@@ -41,7 +40,6 @@ wet = pd.DataFrame()
 
 for file in files:
 	df = utils.read_data(data_path + file)
-	df = utils.amplitude(df)
 	df = df.rolling(n).mean() 
 	df = df.iloc[::n, :]
 
