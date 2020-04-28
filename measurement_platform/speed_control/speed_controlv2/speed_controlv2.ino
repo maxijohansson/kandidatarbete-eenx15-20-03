@@ -46,7 +46,7 @@ void setup() {
   Serial.begin(115200); // start the serial monitor link
   Serial.println("Starting");
   target = 5 / 3.6;
-  Kp = 10;
+  Kp = 1;
   Ki = 0.1;
   myESC.arm();
   Serial.println("Armed");
@@ -119,8 +119,8 @@ void controller(float v) {
 
   u = P + I;
   pwm = pwm + u;
-  if(pwm > 1750){
-    pwm = 1750;
+  if(pwm > 1900){
+    pwm = 1900;
   }
   myESC.speed(pwm);
   //Serial.print("PWM signal: ");

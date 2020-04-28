@@ -4,7 +4,7 @@ import numpy as np
 import h5py
 import json
 
-from config import BASE_DIR
+BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
 def add_files_from_dir(data_path):

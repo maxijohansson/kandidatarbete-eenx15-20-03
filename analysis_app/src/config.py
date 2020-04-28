@@ -17,9 +17,9 @@ files = os.listdir(data_path)
 # files_to_graph = []
 file_table_columns = ['filename', 'timestamp', 'angle', 'range_interval', 'data_length', 'step_length_m', 'update_rate', 'id']
 colors = ['#0074D9', '#FF4136', '#3D9970', '#FF851B', '#B10DC9', '#AAAAAA', '#001f3f', '#7FDBFF']
-max_selected_files = 5
-nan_row = [np.nan for col in file_table_columns]
-empty_selected_file_df = pd.DataFrame(columns=file_table_columns, data = [nan_row for i in range(max_selected_files)])
+max_selected_files = 8
+empty_row = [np.nan for col in file_table_columns]
+empty_selected_file_df = pd.DataFrame(columns=file_table_columns, data = [empty_row for i in range(max_selected_files)])
 
 marks = {i: '{}'.format(i) for i in range(0, 2001, 100)}
 marks.update({2100: 'auto'})
