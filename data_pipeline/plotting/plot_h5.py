@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 
 import data_utils as utils
 
-BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
+BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..\\..')
 
 files = []
 
@@ -20,13 +20,16 @@ files = []
 # files.append('\\data\\phase_2\\wet\\maskinhuset_move_wet_30_2.h5')
 # files.append('\\data\\phase_2\\dry\\maskinhuset_move_30_14.h5')
 
-files.append('\\data\\phase_3\\raw_data\\wet\\fotbollsplan_wet_1.h5')
-files.append('\\data\\phase_3\\raw_data\\dry\\fotbollsplan_dry_1.h5')
+# files.append('\\data\\phase_3\\raw_data\\dry\\ronnvagen_dry_2.h5')
+files.append('\\data\\phase_3\\raw_data\\wet\\ronnvagen_wet_2.h5')
 
-# files.append('\\data\\phase_4\\skidome_1.h5')
-files.append('\\data\\phase_4\\skidome_20.h5')
+# # files.append('\\data\\phase_4\\skidome_1.h5')
+# files.append('\\data\\phase_4\\skidome_20.h5')
 # files.append('\\data\\phase_4\\skidome_raf_1.h5')
 # files.append('\\data\\phase_4\\skidome_raf_32.h5')
+
+# files.append('\\data\\phase_5\\ronnvagen_dry_2_ra0.h5')
+files.append('\\data\\phase_5\\wet\\ronnvagen_wet_2_ra0.h5')
 
 
 ys = []
