@@ -12,7 +12,7 @@ import data_utils as utils
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
-data_path = BASE_DIR + '\\data\\phase_2\\dry\\'
+data_path = BASE_DIR + '\\data\\phase_3\\raw_data\\dry\\'
 
 files = os.listdir(data_path)
 
@@ -31,7 +31,7 @@ dry.dropna(inplace=True)
 
 dry['label'] = 'dry'
 
-data_path = BASE_DIR + '\\data\\phase_2\\wet\\'
+data_path = BASE_DIR + '\\data\\phase_3\\raw_data\\wet\\'
 
 files = os.listdir(data_path)
 
@@ -55,4 +55,4 @@ features = pd.concat([dry, wet])
 features.reset_index(inplace=True, drop=True)
 
 print(features)
-features.to_csv(BASE_DIR + '\\data\\phase_2\\envelope_0415')
+features.to_csv(BASE_DIR + '\\data\\avg_envs\\phase_')

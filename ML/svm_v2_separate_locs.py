@@ -14,9 +14,9 @@ from sklearn.metrics import balanced_accuracy_score
 BASE_DIR = os.path.join(os.path.dirname( __file__ ), '..')
 
 
-# data_path = BASE_DIR + '\\data\\phase_3\\avg_envelope_n10\\'
-data_path = BASE_DIR + '\\data\\phase_3\\moving_average_features\\ma_n10\\'
-
+data_path = BASE_DIR + '\\data\\phase_3\\mean_features\\avg_envelope_n5\\'
+# data_path = BASE_DIR + '\\data\\phase_3\\moving_average_features\\ma_n10\\'
+# data_path = BASE_DIR + '\\data\\phase_3\\ac_features\\ds16_q5_T50\\'
 
 datasets = {}
 ds_factor = 20
@@ -26,7 +26,7 @@ for loc in locs:
 	_df = pd.read_csv(data_path + '{}.csv'.format(loc), index_col=0)
 	X = _df.iloc[:,:-1]
 	y = _df.iloc[:,-1]
-	X = X.iloc[:, ds_factor-1::ds_factor]
+	# X = X.iloc[:, ds_factor-1::ds_factor]
 	datasets[loc] = pd.concat([X,y], axis=1)
 
 print('Size of datasets:')
